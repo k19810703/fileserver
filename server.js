@@ -16,12 +16,12 @@ const upload = multer({ storage: storage });
 
 const app = express();
 
-app.get('/', express.static('index/'), serveIndex('index/', {'icons': true}));
-app.use('/files', express.static('file/'), serveIndex('file/', {'icons': true}));
 app.post('/file', upload.single('file'), function (req, res, next) {
   fs.chmodSync(`./file/${req.file.filename}`, 0o777);
   res.redirect('/');
 });
+app.use('/', express.static('file/'), serveIndex('file/', {'icons': true, 'template': './index/index.html'}));
+
 
 const port = process.env.PORT || '3000';
 
